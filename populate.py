@@ -40,8 +40,8 @@ while (vectorIDToAdd <= newestID):
     r = requests.get(URL)
     soup = BeautifulSoup(r.text, 'html.parser')
 
-    title = "Title: " + JSON.title
-    titleText = "Title text: " + JSON.alt
+    title = "Title: " + JSON["title"]
+    titleText = "Title text: " + JSON["alt"]
 
     text = title
 
@@ -72,7 +72,7 @@ while (vectorIDToAdd <= newestID):
         (str(vectorIDToAdd), embed)
     ])
 
-    data[str(vectorIDToAdd)] = {"id":str(vectorIDToAdd), "values":embed, "title":JSON.title, "date":(JSON["day"] + "/" + JSON["month"] + "/" + JSON["year"])}
+    data[str(vectorIDToAdd)] = {"id":str(vectorIDToAdd), "values":embed, "title":JSON["title"], "date":(JSON["day"] + "/" + JSON["month"] + "/" + JSON["year"])}
 
     with open('vectorsWithMetadata.json', 'w') as file:
         file.write(json.dumps(data))
