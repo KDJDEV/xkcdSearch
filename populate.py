@@ -37,13 +37,12 @@ while (vectorIDToAdd <= newestID):
     URL = f"https://www.explainxkcd.com/wiki/index.php/{vectorIDToAdd}"
     r = requests.get(URL)
     soup = BeautifulSoup(r.text, 'html.parser')
-    titleElement = soup.find(id="firstHeading")
-    title = "Title: " + titleElement.text.split(":")[1]
-    titleTextElement = soup.find('span', text = "Title text:")
-    titleText = ""
-    if (hasattr(titleTextElement, "nextSibling")):
-        titleText = "Title text: " + titleTextElement.nextSibling
+
+    title = "Title: " + JSON.title
+    titleText = "Title text: " + JSON.alt
+
     text = title
+    
     transcript = soup.find(id="Transcript")
     if (transcript):
         currentSibling = transcript.parent.findNext("dl")
