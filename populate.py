@@ -5,17 +5,19 @@ from bs4 import BeautifulSoup
 import json
 from datetime import datetime
 
+with open('keys.json', 'r') as f:
+    keys = json.load(f)
 with open('vectorsWithMetadata.json') as f:
     data = json.load(f)
 # initialize connection to pinecone (get API key at app.pinecone.io)
 pinecone.init(
-    api_key="6dfed7eb-243c-44fd-9823-5c9eb398acb8",
+    api_key=keys["pinecone"],
     environment="us-west1-gcp-free"  # find next to API key in console
 )
 index = pinecone.Index('openai')
 
 MODEL = "text-embedding-ada-002"
-openai.api_key = "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"
+openai.api_key = keys["openai"]
 
 URL = "https://xkcd.com/info.0.json"
 r = requests.get(URL)
@@ -42,7 +44,7 @@ while (vectorIDToAdd <= newestID):
     titleText = "Title text: " + JSON.alt
 
     text = title
-    
+
     transcript = soup.find(id="Transcript")
     if (transcript):
         currentSibling = transcript.parent.findNext("dl")
