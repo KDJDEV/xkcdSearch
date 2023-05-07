@@ -27,4 +27,9 @@ with open('vectorsWithMetadata.json', 'w') as file:
 """
 
 project = atlas.map_embeddings(embeddings=embeddings, data=([{"title" : data[key]["title"],"url": "https://xkcd.com/" + data[key]["id"], "date" : data[key]["date"]} for key in data]), name="xkcd", reset_project_if_exists=True)
-print(project.maps)
+projectID = project.id
+mapID = project.get_map(name="xkcd").id
+mapURL = f"https://atlas.nomic.ai/map/preview/{projectID}/{mapID}"
+with open("data/mapURL.txt", "w") as f:
+    f.write(mapURL)
+print("updated map")

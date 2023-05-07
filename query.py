@@ -20,7 +20,7 @@ def query(text):
 
   queryRes = index.query(
     vector=embed,
-    top_k=10,
+    top_k=30,
     include_values=False
   )
 
