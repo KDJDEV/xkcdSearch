@@ -26,5 +26,5 @@ with open('vectorsWithMetadata.json', 'w') as file:
     file.write(json.dumps(data))
 """
 
-project = atlas.map_embeddings(embeddings=embeddings, data=([{"title" : data[key]["title"],"url": "https://xkcd.com/" + data[key]["id"], "date" : data[key]["date"]} for key in data]), name="xkcd2", reset_project_if_exists=True)
+project = atlas.map_embeddings(embeddings=embeddings, data=([{"title" : data[key]["title"],"url": "https://xkcd.com/" + data[key]["id"], "date" : data[key]["date"]} for key in data]), name="xkcd", reset_project_if_exists=True)
 print(project.maps)
