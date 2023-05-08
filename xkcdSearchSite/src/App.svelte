@@ -80,8 +80,8 @@
         >View source code on GitHub</span
       >
     </a>
-    <h1 class="mt-5">searchxkcd</h1>
-    <p>Search for the perfect xkcd comic with a flexible AI search.</p>
+    <h1 class="mt-5">xkcdfinder</h1>
+    <p>Find the perfect xkcd comic with a flexible AI search.</p>
 
     <form on:submit|preventDefault={search}>
       <Search bind:value={searchInputText}>
