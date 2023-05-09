@@ -1,10 +1,10 @@
 from flask import Flask, request, jsonify, Response
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
+from flask import send_from_directory
 from query import query
 import json
 import requests
-from nomic import AtlasProject
 import pinecone
 
 with open('keys.json', 'r') as f:
@@ -23,6 +23,14 @@ limiter = Limiter(
     default_limits=[],
     storage_uri="memory://",
 )
+
+@app.route("/")
+def index():
+    return send_from_directory("xkcdSearchSite/dist", "index.html")
+
+@app.route('/<path:path>')
+def send_static_files(path):
+    return send_from_directory("xkcdSearchSite/dist", path)
 
 @app.route("/search")
 @limiter.limit("50/day;10/minute")
