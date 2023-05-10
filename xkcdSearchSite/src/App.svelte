@@ -5,6 +5,8 @@
   import Accordian from "./Accordian.svelte";
   import { fade } from "svelte/transition";
   import { SvelteToast, toast } from "@zerodevx/svelte-toast";
+  import logoSVG from "./assets/logo.svg";
+
   let mapURL;
   let mostRecentComicData;
   (async () => {
@@ -62,6 +64,7 @@
 
 <main>
   <SvelteToast />
+  <img src={logoSVG} alt="logo with Beret Guy using magnifying glass" class="w-28 top-2 left-2 m-auto lg:m-0 lg:absolute"/>
   <div>
     <a
       href="https://github.com/KDJDEV/xkcdSearch"
