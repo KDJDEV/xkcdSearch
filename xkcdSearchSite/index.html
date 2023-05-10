@@ -1,25 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/png" href="/logo.png" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Find xkcd comics using an AI search to find comics. You can also see all comics visualized as a dot plot where comics are grouped by similarity.">
-    <meta name="keywords" content="xkcd, search xkcd, find xkcd, browse xkcd, search engine, OpenAI, embeddings, vector database, visualization">
-    <meta name="author" content="Kyle Dagman">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://xkcdfinder.com">
-    <meta property="og:title" content="xkcdfinder">
-    <meta name="og:description" content="Find xkcd comics using an AI search to find comics. You can also see all comics visualized as a dot plot where comics are grouped by similarity.">
-    <meta property="og:image" content="/logo.svg">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="xkcdfinder">
-    <meta name="twitter:description" content="Find xkcd comics using an AI search to find comics. You can also see all comics visualized as a dot plot where comics are grouped by similarity.">
-    <meta name="twitter:image" content="/logo.svg">
-    <title>XKCD Search: Find the perfect xkcd comic with AI search</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.js"></script>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/png" href="/logo.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description"
+    content="Find xkcd comics using an AI search to find comics. You can also see all comics visualized as a dot plot where comics are grouped by similarity.">
+  <meta name="keywords"
+    content="xkcd, search xkcd, find xkcd, browse xkcd, search engine, OpenAI, embeddings, vector database, visualization">
+  <meta name="author" content="Kyle Dagman">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://xkcdfinder.com">
+  <meta property="og:title" content="xkcdfinder">
+  <meta name="og:description"
+    content="Find xkcd comics using an AI search to find comics. You can also see all comics visualized as a dot plot where comics are grouped by similarity.">
+  <meta property="og:image" content="/logo.svg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="xkcdfinder">
+  <meta name="twitter:description"
+    content="Find xkcd comics using an AI search to find comics. You can also see all comics visualized as a dot plot where comics are grouped by similarity.">
+  <meta name="twitter:image" content="/logo.svg">
+  <title>XKCD Search: Find the perfect xkcd comic with AI search</title>
+</head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9N1YBKC4WL"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() { dataLayer.push(arguments); }
+  gtag('js', new Date());
+
+  gtag('config', 'G-9N1YBKC4WL');
+</script>
+
+<body>
+  <div id="app"></div>
+  <script type="module" src="/src/main.js"></script>
+</body>
+
 </html>
