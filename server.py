@@ -61,4 +61,4 @@ def getMostRecentComicID():
     response = Response(str(index.describe_index_stats().total_vector_count), mimetype="text/plain")
     response.headers.add("Access-Control-Allow-Origin", "*")
     return response
-app.run(debug = False)
+app.run()

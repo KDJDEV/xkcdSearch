@@ -10,6 +10,7 @@ with open('keys.json', 'r') as f:
     keys = json.load(f)
 with open('vectorsWithMetadata.json') as f:
     data = json.load(f)
+
 # initialize connection to pinecone (get API key at app.pinecone.io)
 pinecone.init(
     api_key=keys["pinecone"],
