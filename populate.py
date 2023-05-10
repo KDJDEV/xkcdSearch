@@ -4,6 +4,7 @@ import requests
 from bs4 import BeautifulSoup
 import json
 from datetime import datetime
+from atlas import updateAtlas
 
 with open('keys.json', 'r') as f:
     keys = json.load(f)
@@ -24,6 +25,7 @@ r = requests.get(URL)
 newestID = r.json()["num"]
 
 vectorIDToAdd = index.describe_index_stats().total_vector_count + 1
+changedSomething = False
 while (vectorIDToAdd <= newestID):
 
     res = requests.get(f"https://xkcd.com/{vectorIDToAdd}/info.0.json")
@@ -71,6 +73,7 @@ while (vectorIDToAdd <= newestID):
     index.upsert([
         (str(vectorIDToAdd), embed)
     ])
+    changedSomething = True
 
     data[str(vectorIDToAdd)] = {"id":str(vectorIDToAdd), "values":embed, "title":JSON["title"], "date":(JSON["day"] + "/" + JSON["month"] + "/" + JSON["year"])}
 
@@ -78,3 +81,5 @@ while (vectorIDToAdd <= newestID):
         file.write(json.dumps(data))
     vectorIDToAdd += 1
 print(f"most recently cached is no. {index.describe_index_stats().total_vector_count}")
+if (changedSomething):
+    updateAtlas()

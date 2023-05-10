@@ -9,7 +9,7 @@
     let imgURL;
     let transcript;
     (async () => {
-        const res = await fetch(`http://127.0.0.1:5000/fetchxkcd/${id}`);
+        const res = await fetch(`/fetchxkcd/${id}`);
         const json = await res.json();
         titleText = json.alt;
         title = json.title;

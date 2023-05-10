@@ -10,12 +10,12 @@
   let mapURL;
   let mostRecentComicData;
   (async () => {
-    mapURL = await (await fetch("http://127.0.0.1:5000/getMapURL")).text();
+    mapURL = await (await fetch("/getMapURL")).text();
     const mostRecentComicID = await (
-      await fetch("http://127.0.0.1:5000/getMostRecentComicID")
+      await fetch("/getMostRecentComicID")
     ).json();
     mostRecentComicData = await (
-      await fetch(`http://127.0.0.1:5000/fetchxkcd/${mostRecentComicID}`)
+      await fetch(`/fetchxkcd/${mostRecentComicID}`)
     ).json();
   })();
 
@@ -30,7 +30,7 @@
     searching = true;
     try {
       const res = await fetch(
-        `http://127.0.0.1:5000/search?q=${sanitizedInput}`
+        `/search?q=${sanitizedInput}`
       );
       if (res.status === 429) {
         toast.push("You have been rate limited. Please try again later!", {
@@ -64,7 +64,7 @@
 
 <main>
   <SvelteToast />
-  <img src={logoSVG} alt="logo with Beret Guy using magnifying glass" class="w-28 top-2 left-2 m-auto lg:m-0 lg:absolute"/>
+  <a href="/"><img src={logoSVG} alt="logo with Beret Guy using magnifying glass" class="w-28 top-2 left-2 m-auto lg:m-0 lg:absolute"/></a>
   <div>
     <a
       href="https://github.com/KDJDEV/xkcdSearch"
