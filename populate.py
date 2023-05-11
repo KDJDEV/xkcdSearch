@@ -5,9 +5,16 @@ from bs4 import BeautifulSoup
 import json
 from datetime import datetime
 from atlas import updateAtlas
+import os
 
+if not os.path.exists("keys.json"):
+    print("Please create and populate keys.json")
 with open('keys.json', 'r') as f:
     keys = json.load(f)
+if not os.path.exists("vectorsWithMetadata.json"):
+    with open("vectorsWithMetadata.json", "w") as f:
+        print("Initializing vectorsWithMetadata.json")
+        f.write("{}")
 with open('vectorsWithMetadata.json') as f:
     data = json.load(f)
 
