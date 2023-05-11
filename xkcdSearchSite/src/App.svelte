@@ -67,7 +67,7 @@
   <a href="/"><img src={logoSVG} alt="logo with Beret Guy using magnifying glass" class="w-28 top-2 left-2 m-auto lg:m-0 lg:absolute"/></a>
   <div>
     <a
-      href="https://github.com/KDJDEV/xkcdSearch"
+      href="https://github.com/KDJDEV/xkcdfinder"
       class="inline-flex top-2 right-2 m-auto lg:m-0 relative lg:absolute items-center p-3 text-base font-bold text-gray-900 bg-gray-50 rounded-lg hover:bg-gray-100 group hover:shadow dark:bg-gray-600 dark:hover:bg-gray-500 dark:text-white"
     >
       <svg
