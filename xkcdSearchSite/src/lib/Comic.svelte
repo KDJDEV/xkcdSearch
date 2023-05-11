@@ -42,7 +42,6 @@
         >
     </p>
     <ImageWithAlt src={imgURL} alt={transcript}/>
-    <img src={imgURL} class=" max-h-96" alt={transcript} />
     
     <p class="m-3 ml-0 text-black">{titleText || "Loading title text..."}</p>
 </div>
