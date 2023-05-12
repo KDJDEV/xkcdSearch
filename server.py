@@ -26,11 +26,11 @@ limiter = Limiter(
 
 @app.route("/")
 def index():
-    return send_from_directory("xkcdSearchSite/dist", "index.html")
+    return send_from_directory("site/dist", "index.html")
 
 @app.route('/<path:path>')
 def send_static_files(path):
-    return send_from_directory("xkcdSearchSite/dist", path)
+    return send_from_directory("site/dist", path)
 
 @app.route("/search")
 @limiter.limit("50/day;10/minute")

@@ -24,35 +24,30 @@
   let resultsData = [];
   let showAmount = 5;
   async function search() {
+    if (searching) return;
     resultsData = [];
     showAmount = 5;
     const sanitizedInput = sanitize(searchInputText);
     searching = true;
-    try {
-      const res = await fetch(
-        `/search?q=${sanitizedInput}`
-      );
-      if (res.status === 429) {
-        toast.push("You have been rate limited. Please try again later!", {
-          theme: {
-            "--toastBarBackground": "red",
-          },
-        });
-      } else if (res.status !== 200) {
-        toast.push("An unknown error has occurred. Please try again later!", {
-          theme: {
-            "--toastBarBackground": "red",
-          },
-        });
-      }
-      resultsData = await res.json();
-    } catch (error) {
+
+    const res = await fetch(`/search?q=${sanitizedInput}`);
+    if (res.status === 429) {
+      searching = false;
+      toast.push("You have been rate limited. Please try again later!", {
+        theme: {
+          "--toastBarBackground": "red",
+        },
+      });
+    } else if (res.status !== 200) {
+      searching = false;
       toast.push("An unknown error has occurred. Please try again later!", {
         theme: {
           "--toastBarBackground": "red",
         },
       });
     }
+    resultsData = await res.json();
+
     searching = false;
   }
   function showMore() {
@@ -64,7 +59,13 @@
 
 <main>
   <SvelteToast />
-  <a href="/"><img src={logoSVG} alt="logo with Beret Guy using magnifying glass" class="w-28 top-2 left-2 m-auto lg:m-0 lg:absolute"/></a>
+  <a href="/"
+    ><img
+      src={logoSVG}
+      alt="logo with Beret Guy using magnifying glass"
+      class="w-28 top-2 left-2 m-auto lg:m-0 lg:absolute"
+    /></a
+  >
   <div>
     <a
       href="https://github.com/KDJDEV/xkcdfinder"
@@ -96,7 +97,10 @@
       based.
     </p>
   </div>
-  <div class="max-w-[600px] m-auto relative mt-5 text-gray-500 pt-6" style="margin-bottom:{resultsData.length > 0 ? "150px" : 0}">
+  <div
+    class="max-w-[600px] m-auto relative mt-5 text-gray-500 pt-6"
+    style="margin-bottom:{resultsData.length > 0 ? '150px' : 0}"
+  >
     {#if searching}
       <div in:fade class=" mt-10">
         <Spinner size="20" />
