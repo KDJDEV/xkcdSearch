@@ -1,5 +1,5 @@
-import pinecone
-import openai
+from pinecone import Pinecone
+from openai import OpenAI
 import requests
 from bs4 import BeautifulSoup
 import json
@@ -19,15 +19,11 @@ if not os.path.exists("vectorsWithMetadata.json"):
 with open('vectorsWithMetadata.json') as f:
     data = json.load(f)
 
-# initialize connection to pinecone (get API key at app.pinecone.io)
-pinecone.init(
-    api_key=keys["pinecone"],
-    environment="us-west1-gcp-free"  # find next to API key in console
-)
-index = pinecone.Index('openai')
+MODEL = "text-embedding-3-large"
+client = OpenAI(api_key=keys["openai"])
 
-MODEL = "text-embedding-ada-002"
-openai.api_key = keys["openai"]
+pc = Pinecone(api_key=keys["pinecone"])
+index = pc.Index("openai")
 
 URL = "https://xkcd.com/info.0.json"
 r = requests.get(URL)
@@ -35,8 +31,12 @@ newestID = r.json()["num"]
 
 vectorIDToAdd = index.describe_index_stats().total_vector_count + 1
 changedSomething = False
-while (vectorIDToAdd <= newestID):
 
+repeatTries = 0
+while (vectorIDToAdd <= newestID):
+    if vectorIDToAdd == 404:
+        vectorIDToAdd += 1
+        continue
     res = requests.get(f"https://xkcd.com/{vectorIDToAdd}/info.0.json")
     JSON = json.loads(res.text)
 
@@ -47,40 +47,48 @@ while (vectorIDToAdd <= newestID):
         dayText = "day" if daysPassed == 1 else "days"
         print(f"comic no. {vectorIDToAdd} is only {daysPassed} {dayText} old, minimum 2")
         break
-    URL = f"https://www.explainxkcd.com/wiki/index.php/{vectorIDToAdd}"
-    r = requests.get(URL)
-    soup = BeautifulSoup(r.text, 'html.parser')
+    try:
+        URL = f"https://www.explainxkcd.com/wiki/index.php/{vectorIDToAdd}"
+        r = requests.get(URL)
+        soup = BeautifulSoup(r.text, 'html.parser')
 
-    title = "Title: " + JSON["title"]
-    titleText = "Title text: " + JSON["alt"]
+        title = "Title: " + JSON["title"]
+        titleText = "Title text: " + JSON["alt"]
 
-    text = title
+        text = title
 
-    transcript = soup.find(id="Transcript")
-    if (transcript):
-        currentSibling = transcript.parent.findNext("dl")
-        text += "\n" + "Transcript: "
-        if (currentSibling):
-            text += currentSibling.get_text()
-            while (currentSibling.name == "dl"):
-                text += "\n" + currentSibling.get_text()
-                currentSibling = currentSibling.next_sibling
-    text += "\n" + titleText
-    text += "\nExplanation: "
-    explanation = soup.select_one("#Explanation, #Explanations, #Brief_Explanation, #Eggsplanation")
-    
-    currentSibling = explanation.parent.findNext("p")
-    while (currentSibling and str(currentSibling.name).find("h") == -1):
-        text += "\n" + currentSibling.get_text()
-        currentSibling = currentSibling.next_sibling
-    text = text[:1000]
-    print(text)
-    res = openai.Embedding.create(
-    input=text, engine=MODEL
+        transcript = soup.find(id="Transcript")
+        if (transcript):
+            currentSibling = transcript.parent.findNext("dl")
+            text += "\n" + "Transcript: "
+            if (currentSibling):
+                text += currentSibling.get_text()
+                while (currentSibling.name == "dl"):
+                    text += "\n" + currentSibling.get_text()
+                    currentSibling = currentSibling.next_sibling
+        text += "\n" + titleText
+        text += "\nExplanation: "
+        explanation = soup.select_one("#Explanation, #Explanations, #Brief_Explanation, #Eggsplanation")
+        currentSibling = explanation.parent.findNext("p")
+        while (currentSibling and str(currentSibling.name).find("h") == -1):
+            text += "\n" + currentSibling.get_text()
+            currentSibling = currentSibling.next_sibling
+        text = text[:1000]
+        print(text)
+        repeatTries = 0
+    except AttributeError:
+        if (repeatTries < 3):
+            repeatTries += 1
+            print("Failed to parse page, retrying...")
+            continue
+        else:
+            raise Exception("Failed to parse page")
+    res = client.embeddings.create(
+    input=text, model=MODEL
     )
     embed = res.data[0].embedding
-    index.upsert([
-        (str(vectorIDToAdd), embed)
+    index.upsert(vectors=[
+        {"id":str(vectorIDToAdd), "values":embed}
     ])
     changedSomething = True
 

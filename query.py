@@ -1,21 +1,20 @@
-import pinecone
-import openai
+from pinecone import Pinecone
+from openai import OpenAI
 import json
 
 with open('keys.json', 'r') as f:
     keys = json.load(f)
 
-pinecone.init(
-    api_key=keys["pinecone"],
-    environment="us-west1-gcp-free"  # find next to API key in console
-)
-index = pinecone.Index('openai')
+MODEL = "text-embedding-3-large"
+client = OpenAI(api_key=keys["openai"])
 
-MODEL = "text-embedding-ada-002"
-openai.api_key = keys["openai"]
+pc = Pinecone(api_key=keys["pinecone"])
+index = pc.Index("openai")
 
 def query(text):
-  res = openai.Embedding.create(input=text, engine=MODEL)
+  res = client.embeddings.create(
+    input=text, model=MODEL
+    )
   embed = res.data[0].embedding
 
   queryRes = index.query(

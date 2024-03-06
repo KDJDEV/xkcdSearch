@@ -5,16 +5,12 @@ from flask import send_from_directory
 from query import query
 import json
 import requests
-import pinecone
+from pinecone import Pinecone
 
 with open('keys.json', 'r') as f:
     keys = json.load(f)
-# initialize connection to pinecone (get API key at app.pinecone.io)
-pinecone.init(
-    api_key=keys["pinecone"],
-    environment="us-west1-gcp-free"  # find next to API key in console
-)
-index = pinecone.Index('openai')
+
+pc = Pinecone(api_key=keys["pinecone"])
 
 app = Flask(__name__)
 limiter = Limiter(
@@ -57,8 +53,10 @@ def getMapURL():
     
 @app.route("/getMostRecentComicID")
 def getMostRecentComicID():
-    index = pinecone.Index('openai')
+    index = pc.Index("openai")
     response = Response(str(index.describe_index_stats().total_vector_count), mimetype="text/plain")
     response.headers.add("Access-Control-Allow-Origin", "*")
     return response
-app.run()
+
+if __name__ == '__main__':
+   app.run(port=80, debug=False)
