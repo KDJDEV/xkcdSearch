@@ -131,9 +131,9 @@
         Dots close to each other should be comics that are more similar, while
         those farther apart should be less similar.
       </li>
-      <li>You can see which comic any dot represents by clicking it.</li>
+      <li>You can see which comic any dot represents by hovering over it.</li>
     </ul>
-    <div class="w-full h-[400px] border-4 shadow-md">
+    <div class="w-full h-[500px] border-4 shadow-md">
       {#if mapURL}
         <iframe src={mapURL} title="xkcd comics" class="w-full h-full" />
       {:else}
